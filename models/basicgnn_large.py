@@ -281,7 +281,7 @@ class BasicGNN(torch.nn.Module):
         return F.log_softmax(x_all,dim=1).to(device)
 
     @torch.no_grad()
-    def large_inference(self, x_all: Tensor, loader: NeighborSampler,
+    def large_inference(self, x_all, loader: NeighborSampler,
                   device: Optional[torch.device] = None,
                   progress_bar: bool = False) -> Tensor:
         self.eval()
@@ -291,20 +291,18 @@ class BasicGNN(torch.nn.Module):
 
         xs: List[Tensor] = []
         for batch_size, n_id, adjs in loader:
-            adjs = [adj.to(device) for adj in adjs]
-            x = x_all[n_id].to(device)
-
+            x = torch.FloatTensor(x_all[n_id]).to(device)
             for i in range(self.temp_layers):
+                target_num = adjs[i][2][1]
                 edge_index = adjs[i].adj_t.to(device)
                 if self.sgc==False:
-                    x = self.convs[i](x, edge_index)[:adjs[i].size[1]]
+                    x = self.convs[i](x, edge_index)[:target_num]
                 else:
-                    x = self.convs[0].propagate(edge_index, x=x)[:adjs[i].size[1]]
+                    x = self.convs[0].propagate(edge_index, x=x)[:target_num]
                     if i==self.temp_layers-1:
                         x=self.convs[0].lin(x)
                 if self.sgc==False:
-                    if i == self.nlayers - 1 and self.jk_mode is None:
-                        xs.append(x.cpu())
+                    if i == self.nlayers - 1:
                         continue
                     if self.act is not None and self.act_first:
                         x = self.act(x)
@@ -315,10 +313,9 @@ class BasicGNN(torch.nn.Module):
                     if i == self.nlayers - 1 and hasattr(self, 'lin'):
                         x = self.lin(x)
             xs.append(x.cpu())
-            
-        x_all = torch.cat(xs, dim=0)
+        x_all = torch.concat(xs, axis=0)
 
-        return F.log_softmax(x_all,dim=1).to(device)
+        return F.log_softmax(x_all ,dim=1)
     
     def __repr__(self) -> str:
         return (f'{self.__class__.__name__}({self.nfeat}, '
