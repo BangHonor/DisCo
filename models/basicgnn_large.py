@@ -280,6 +280,46 @@ class BasicGNN(torch.nn.Module):
 
         return F.log_softmax(x_all,dim=1).to(device)
 
+    @torch.no_grad()
+    def large_inference(self, x_all: Tensor, loader: NeighborSampler,
+                  device: Optional[torch.device] = None,
+                  progress_bar: bool = False) -> Tensor:
+        self.eval()
+        assert self.jk_mode is None or self.jk_mode == 'last'
+        assert isinstance(loader, NeighborSampler)
+        assert not self.training
+
+        xs: List[Tensor] = []
+        for batch_size, n_id, adjs in loader:
+            adjs = [adj.to(device) for adj in adjs]
+            x = x_all[n_id].to(device)
+
+            for i in range(self.temp_layers):
+                edge_index = adjs[i].adj_t.to(device)
+                if self.sgc==False:
+                    x = self.convs[i](x, edge_index)[:adjs[i].size[1]]
+                else:
+                    x = self.convs[0].propagate(edge_index, x=x)[:adjs[i].size[1]]
+                    if i==self.temp_layers-1:
+                        x=self.convs[0].lin(x)
+                if self.sgc==False:
+                    if i == self.nlayers - 1 and self.jk_mode is None:
+                        xs.append(x.cpu())
+                        continue
+                    if self.act is not None and self.act_first:
+                        x = self.act(x)
+                    if self.norms is not None:
+                        x = self.norms[i](x)
+                    if self.act is not None and not self.act_first:
+                        x = self.act(x)
+                    if i == self.nlayers - 1 and hasattr(self, 'lin'):
+                        x = self.lin(x)
+            xs.append(x.cpu())
+            
+        x_all = torch.cat(xs, dim=0)
+
+        return F.log_softmax(x_all,dim=1).to(device)
+    
     def __repr__(self) -> str:
         return (f'{self.__class__.__name__}({self.nfeat}, '
                 f'{self.nclass}, nlayers={self.nlayers})')
