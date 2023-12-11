@@ -30,7 +30,7 @@ Please follow the instructions below to replicate the results in the paper.
 
 Run to reproduce the results of Table 3 in "scripts/baseline_comparison.sh" . 
 
-Run to reproduce the results of Table 5 in "scripts/ogbn-papers100M.sh" . 
+Run to reproduce the results of Table 5 in "scripts/papers100M.sh" . 
 
 Run to reproduce the results of Table 6 in "scripts/generalizability.sh" . 
 
