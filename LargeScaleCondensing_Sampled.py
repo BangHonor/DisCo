@@ -27,7 +27,7 @@ from models.mlp import MLP as MLP_PYG
 from models.parametrized_adj_lp import PGE_Edge
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--gpu_id', type=int, default=0, help='gpu id')
+parser.add_argument('--gpu_id', type=int, default=1, help='gpu id')
 parser.add_argument('--parallel_gpu_ids', type=list, default=[0, 1, 2], help='gpu id')
 parser.add_argument('--dataset', type=str, default='ogbn-papers100M')
 parser.add_argument('--seed', type=int, default=1, help='Random seed.')
@@ -297,7 +297,7 @@ def train_on_syn_graph():
 
     val_inference_loader=NeighborSampler(
         edge_index=adj,
-        sizes=[-1, -1], 
+        sizes=[-1] * args.nlayers, 
         node_idx=idx_val,
         batch_size=args.batch_size,
         num_workers=12, 
@@ -307,7 +307,7 @@ def train_on_syn_graph():
     )
     test_inference_loader=NeighborSampler(
         edge_index=adj,
-        sizes=[-1, -1], 
+        sizes=[-1] * args.nlayers, 
         node_idx=idx_test,
         batch_size=args.batch_size,
         num_workers=12, 
@@ -497,7 +497,8 @@ if __name__ == '__main__':
         adj = SparseTensor(row=data.edge_index[0], col=data.edge_index[1], value=edge_weight, sparse_sizes=(N,N)).t()
     else:#add self loops
         adj = SparseTensor(row=torch.concat((data.edge_index[0], torch.arange(N))), col=torch.concat((data.edge_index[1], torch.arange(N))), value=torch.concat((torch.ones((data.edge_index.shape[1],)),torch.ones((N,)))), sparse_sizes=(N,N)).t()
+    
     del data
-
+    gc.collect()
     #train on the synthetic graph
     train_on_syn_graph()
