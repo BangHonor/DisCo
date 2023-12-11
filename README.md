@@ -34,7 +34,7 @@ Run to reproduce the results of Table 5 in "scripts/papers100M.sh" .
 
 Run to reproduce the results of Table 6 in "scripts/generalizability.sh" . 
 
-Run to reproduce the results of Table 6 in "scripts/nas.sh" . 
+Run to reproduce the results of Table 7 in "scripts/nas.sh" . 
 
 ## Contact
 Please feel free to contact me via email (xiaozhb@zju.edu.cn) if you are interested in my research :)
