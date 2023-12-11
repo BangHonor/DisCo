@@ -333,8 +333,8 @@ def train_on_syn_graph():
 
         if j%args.student_val_stage==0:
             if args.model!='MLP':
-                output_val = model.inference(torch.FloatTensor(feat).to('cpu'), val_inference_loader, device)
-                output_test = model.inference(torch.FloatTensor(feat).to('cpu'), test_inference_loader, device)
+                output_val = model.large_inference(torch.FloatTensor(feat).to('cpu'), val_inference_loader, device)
+                output_test = model.large_inference(torch.FloatTensor(feat).to('cpu'), test_inference_loader, device)
             else:
                 output_val = model.inference(torch.FloatTensor(feat[idx_val]).to(device), batch_size = 500000)
                 output_test = model.inference(torch.FloatTensor(feat[idx_test]).to(device), batch_size = 500000)
