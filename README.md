@@ -14,7 +14,6 @@ See requirments.txt file for more information about how to install the dependenc
 
 ## Run the Code
 For transductive setting, please run the following command:
-
 ```
 python -u LargeScaleCondensing.py --dataset ogbn-arxiv --edge_pred aggr --condensing_loop 1500 --reduction_rate=0.01 --gpu_id=0 --model=GCN --seed=1
 ```
@@ -23,6 +22,11 @@ where the parameter ```r``` represents the ratio of condensed nodes to the label
 For inductive setting, please run the following command:
 ```
 python -u LargeScaleCondensing_induct.py --dataset reddit --edge_pred aggr --condensing_loop 2500 --reduction_rate=0.002 --gpu_id=0 --model=GCN --seed=1
+```
+
+For the ogbn-papers100M dataset, please run the following command to make use of the super large-scale condensation:
+```
+ python -u LargeScaleCondensing_Sampled.py --dataset ogbn-papers100M --edge_pred aggr --condensing_loop 2500 --inference True  --reduction_rate=$0.01 --gpu_id=0 --model=SGC --seed=1
 ```
 
 ## Reproduce
