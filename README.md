@@ -32,13 +32,13 @@ For the ogbn-papers100M dataset, please run the following command to make use of
 ## Reproduce
 Please follow the instructions below to replicate the results in the paper.
 
-Run to reproduce the results of Table 3 in "scripts/baseline_comparison.sh" . 
+Run to reproduce the results of Table 3 in "scripts/baseline_comparison.sh" . The train_original.py and train_original_induct.py files aim to compute the whole dataset performance without graph condensation.
 
-Run to reproduce the results of Table 5 in "scripts/papers100M.sh" . 
+Run to reproduce the results of Table 5 in "scripts/papers100M.sh" . The train_coreset_papers100M.py file aims to test the coreset method on the ogbn-papers100M dataset.
 
 Run to reproduce the results of Table 6 in "scripts/generalizability.sh" . 
 
-Run to reproduce the results of Table 7 in "scripts/nas.sh" . 
+Run to reproduce the results of Table 7 in "scripts/nas.sh" . The nas_transductive.py and nas_inductive.py files aim to test the coreset method on the ogbn-papers100M dataset.
 
 ## Contact
 Please feel free to contact me via email (xiaozhb@zju.edu.cn) if you are interested in my research :)
