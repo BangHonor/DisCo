@@ -49,7 +49,7 @@ surpasses SOTA methods by more than 2% on reddit and reddit2.
 
 **Scalability**: DisCo can successfully scale up to the ogbn-papers100M graph with over 100 million nodes and 1 billion edges with flexible reduction rates.  On the ogbn-products datase, DisCo consistently outperforms other condensation methods across all reduction rates and exhibits a higher upper limit for the reduction rate, exceeding 4%, allowing for the generation of high-fidelity condensed graphs. 
 <p align="center">
-  <img width="500" height="400"  src="https://github.com/BangHonor/DisCo/assets/63777094/f1acec7b-c67b-4ec3-91d2-fa620bbfd6ea">
+  <img width="500" height="600"  src="https://github.com/BangHonor/DisCo/assets/63777094/f1acec7b-c67b-4ec3-91d2-fa620bbfd6ea">
 </p>
 
 ## Contact
