@@ -149,10 +149,23 @@ class Transd2Ind:
                                             train_size=keep_ratio,
                                             test_size=1-keep_ratio,
                                             stratify=labels[idx_train])
+        from scipy.sparse import csr_matrix
+        # 假设adj是csr_matrix类型
+        row_indices = np.intersect1d(np.where(np.in1d(np.arange(adj.shape[0]), idx_train)), idx_train)
+        col_indices = np.intersect1d(np.where(np.in1d(np.arange(adj.shape[1]), idx_train)), idx_train)
+        self.adj_train = adj[row_indices, :][:, col_indices]
 
-        self.adj_train = adj[np.ix_(idx_train, idx_train)]
-        self.adj_val = adj[np.ix_(idx_val, idx_val)]
-        self.adj_test = adj[np.ix_(idx_test, idx_test)]
+        row_indices = np.intersect1d(np.where(np.in1d(np.arange(adj.shape[0]), idx_val)), idx_val)
+        col_indices = np.intersect1d(np.where(np.in1d(np.arange(adj.shape[1]), idx_val)), idx_val)
+        self.adj_val = adj[row_indices, :][:, col_indices]
+
+        row_indices = np.intersect1d(np.where(np.in1d(np.arange(adj.shape[0]), idx_test)), idx_test)
+        col_indices = np.intersect1d(np.where(np.in1d(np.arange(adj.shape[1]), idx_test)), idx_test)
+        self.adj_test = adj[row_indices, :][:, col_indices]
+
+        # self.adj_train = adj[np.ix_(idx_train, idx_train)]
+        # self.adj_val = adj[np.ix_(idx_val, idx_val)]
+        # self.adj_test = adj[np.ix_(idx_test, idx_test)]
         print('size of adj_train:', self.adj_train.shape)
         print('#edges in adj_train:', self.adj_train.sum())
 
