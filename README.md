@@ -1,5 +1,5 @@
-# Disentangled Condensation for Graphs (DisCo)
-Official codebase for paper Disentangled Condensation for Graphs. The paper can be found here: https://arxiv.org/abs/2401.12231. This codebase is based on the open-source Pytorch Geometric framework.
+# Disentangled Condensation for Large-scale Graphs (DisCo)
+Official codebase for paper Disentangled Condensation for Large-scale Graphs. The paper can be found here: https://arxiv.org/abs/2401.12231. This codebase is based on the open-source Pytorch Geometric framework.
 
 ## Overview
 
